@@ -8,15 +8,31 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State private var dataService = DataService()
+    @State var joke :  JokeModel?
     var body: some View {
         VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+            Spacer()
+            if let jokeText = joke?.joke {
+                           Text(jokeText)
+                               .font(.headline)
+                               .padding()
+                       } else {
+                           Text("Press the button to get a joke!")
+                               .foregroundColor(.gray)
+                       }
+            Spacer()
+            Button("Get Joke") {
+                Task {
+                    joke = await self.dataService.getJoke()
+                }
+            }
+            
         }
         .padding()
     }
+    
+    
 }
 
 #Preview {
